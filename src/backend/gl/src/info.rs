@@ -301,7 +301,6 @@ pub fn get_all(gl: &gl::Gl) -> (Info, Capabilities, PrivateCaps) {
                                            && !is_emscripten,
         unordered_access_view_supported:   info.is_supported(&[Core(4,0)]), //TODO: extension
         separate_blending_slots_supported: info.is_supported(&[Core(4,0),
-                                                               Es  (3,2), // see `glDisablei`
                                                                Ext ("GL_ARB_draw_buffers_blend")]),
         copy_buffer_supported:             info.is_supported(&[Core(3,1),
                                                                Es  (3,0),
