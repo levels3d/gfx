@@ -43,6 +43,7 @@ pub fn kind_to_gl(kind: t::Kind) -> GLenum {
         t::Kind::D3(_, _, _) => gl::TEXTURE_3D,
         t::Kind::Cube(_) => gl::TEXTURE_CUBE_MAP,
         t::Kind::CubeArray(_, _) => gl::TEXTURE_CUBE_MAP_ARRAY,
+        t::Kind::External => 0x8D65, // gl::TEXTURE_EXTERNAL_OES
     }
 }
 
@@ -396,6 +397,7 @@ fn make_widout_storage_impl(gl: &gl::Gl, kind: t::Kind, format: GLint, pix: GLen
         t::Kind::CubeArray(_, _) => return Err(t::CreationError::Kind),
         t::Kind::D2(_, _, aa) => return Err(t::CreationError::Samples(aa)),
         t::Kind::D2Array(_, _, _, aa) => return Err(t::CreationError::Samples(aa)),
+        t::Kind::External => {},
     }
 
     set_mipmap_range(gl, target, (0, levels - 1));
@@ -530,6 +532,7 @@ fn make_with_storage_impl(gl: &gl::Gl, kind: t::Kind, format: GLenum,
         },
         t::Kind::D2(_, _, aa) => return Err(t::CreationError::Samples(aa)),
         t::Kind::D2Array(_, _, _, aa) => return Err(t::CreationError::Samples(aa)),
+        t::Kind::External => return Err(t::CreationError::Kind),
     }
 
     set_mipmap_range(gl, target, (0, levels - 1));
@@ -652,7 +655,7 @@ fn tex_sub_image<F>(gl: &gl::Gl, kind: t::Kind, target: GLenum, pix: GLenum,
                 data
             );
         },
-        t::Kind::CubeArray(_, _) => return Err(t::CreationError::Kind),
+        t::Kind::CubeArray(_, _) | t::Kind::External => return Err(t::CreationError::Kind),
         t::Kind::D2(_, _, aa) => return Err(t::CreationError::Samples(aa)),
         t::Kind::D2Array(_, _, _, aa) => return Err(t::CreationError::Samples(aa)),
     })

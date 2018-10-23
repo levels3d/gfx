@@ -262,6 +262,8 @@ pub enum Kind {
     Cube(Size),
     /// An array of Cube textures.
     CubeArray(Size, Layer),
+    /// An external image of unspecified format
+    External,
 }
 
 impl Kind {
@@ -275,7 +277,8 @@ impl Kind {
             Kind::D2Array(w, h, a, s) => (w, h, a as Size, s),
             Kind::D3(w, h, d) => (w, h, d, s0),
             Kind::Cube(w) => (w, w, 6, s0),
-            Kind::CubeArray(w, a) => (w, w, 6 * (a as Size), s0)
+            Kind::CubeArray(w, a) => (w, w, 6 * (a as Size), s0),
+            Kind::External => (0, 0, 0, s0)
         }
     }
     /// Get the dimensionality of a particular mipmap level.
@@ -305,7 +308,7 @@ impl Kind {
     /// Return the number of slices for an array, or None for non-arrays.
     pub fn get_num_slices(&self) -> Option<Layer> {
         match *self {
-            Kind::D1(..) | Kind::D2(..) | Kind::D3(..) | Kind::Cube(..) => None,
+            Kind::D1(..) | Kind::D2(..) | Kind::D3(..) | Kind::Cube(..) | Kind::External => None,
             Kind::D1Array(_, a) => Some(a),
             Kind::D2Array(_, _, a, _) => Some(a),
             Kind::CubeArray(_, a) => Some(a),
