@@ -814,6 +814,20 @@ impl Device {
                     filter
                 ) };
             },
+            Command::PushGroup(ref group) => {
+                let group = group.as_bytes();
+                let size = group.len() as i32;
+                let gl = &self.share.context;
+                unsafe {
+                    gl.PushDebugGroup(gl::DEBUG_SOURCE_THIRD_PARTY, 255, size, group.as_ptr());
+                }
+            },
+            Command::PopGroup => {
+                let gl = &self.share.context;
+                unsafe {
+                    gl.PopDebugGroup();
+                }
+            },
         }
         if let Err(err) = self.share.check() {
             panic!("Error {:?} executing command: {:?}", err, cmd)

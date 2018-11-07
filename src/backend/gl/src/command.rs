@@ -124,6 +124,9 @@ pub enum Command {
                 c::VertexCount,
                 Option<command::InstanceParams>),
     _Blit(Rect, Rect, Mirror, usize),
+
+    PushGroup(String),
+    PopGroup,
 }
 
 pub fn generate_reset() -> Vec<Command> {
@@ -659,4 +662,13 @@ impl command::Buffer<Resources> for CommandBuffer {
                       base,
                       instances));
     }
+
+    fn push_group(&mut self, group: &str) {
+        self.buf.push(Command::PushGroup(group.into()));
+    }
+
+    fn pop_group(&mut self) {
+        self.buf.push(Command::PopGroup);
+    }
+
 }

@@ -561,4 +561,14 @@ impl<R: Resources, C: command::Buffer<R>> Encoder<R, C> {
         let srv = self.handles.ref_srv(view).clone();
         self.command_buffer.generate_mipmap(srv);
     }
+
+    /// Start a new debug group
+    pub fn push_group(&mut self, group: &str) {
+        self.command_buffer.push_group(group);
+    }
+
+    /// Stop a debug group
+    pub fn pop_group(&mut self) {
+        self.command_buffer.pop_group();
+    }
 }

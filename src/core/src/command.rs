@@ -94,6 +94,9 @@ pub trait Buffer<R: Resources>: 'static + Send {
     fn call_draw(&mut self, VertexCount, VertexCount, Option<InstanceParams>);
     /// Draw a primitive with index buffer
     fn call_draw_indexed(&mut self, VertexCount, VertexCount, VertexCount, Option<InstanceParams>);
+
+    fn push_group(&mut self, group: &str);
+    fn pop_group(&mut self);
 }
 
 macro_rules! impl_clear {
